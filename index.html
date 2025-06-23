@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Código de Participação</title>
+  <script>
+    function gerarCodigo() {
+      const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      const numeros = "0123456789";
+      let codigo = "";
+      for (let i = 0; i < 2; i++) codigo += letras[Math.floor(Math.random() * letras.length)];
+      for (let i = 0; i < 4; i++) codigo += numeros[Math.floor(Math.random() * numeros.length)];
+      document.getElementById("codigo").innerText = codigo;
+
+      // Enviar para o Google Sheets
+      fetch("https://script.google.com/macros/s/AKfycbx_wXsmZS5vi0TMFEe0gN7ZCkt7qlKx8WK4QGHPdL41WuUZVjP-3Lc4Zs9ijIyyGrJk/exec", {
+        method: "POST",
+        body: JSON.stringify({ codigo: codigo }),
+        headers: { "Content-Type": "application/json" }
+      }).then(response => {
+        console.log("Código enviado com sucesso");
+      }).catch(error => {
+        console.error("Erro ao enviar código:", error);
+      });
+    }
+
+    window.onload = gerarCodigo;
+  </script>
+</head>
+<body>
+  <h2>Obrigado por responder!</h2>
+  <p>Seu código de participação é: <strong id="codigo"></strong></p>
+  <p>Guarde este código para participar do sorteio.</p>
+</body>
+</html>
