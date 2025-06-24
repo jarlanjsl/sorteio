@@ -13,7 +13,7 @@
       document.getElementById("codigo").innerText = codigo;
 
       // Enviar para o Google Sheets
-      fetch("https://script.google.com/macros/s/AKfycbxBUkd5cXQaO7D2LXADyevi_nKYvCnWxyIoMJgHj6FTOf5cjbueN9ID07cgLlusSWTt/exec", {
+      fetch("https://script.google.com/macros/s/AKfycbyvv5nZLgjZxsZi-u_EzDT7SpkZqm3Z3o4wdKwzaXE_mb7ogFFbEzEIqC1-ah38VKsY/exec", {
         method: "POST",
         body: JSON.stringify({ codigo: codigo }),
         headers: { "Content-Type": "application/json" },
