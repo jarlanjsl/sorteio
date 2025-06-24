@@ -13,11 +13,12 @@
       document.getElementById("codigo").innerText = codigo;
 
       // Enviar para o Google Sheets
-      // SUBSTITUA O URL ABAIXO PELO URL DA SUA NOVA IMPLANTAÇÃO DO GOOGLE APPS SCRIPT
-      fetch("https://script.google.com/macros/s/AKfycbxTPV1nsb5vOolJNxE2WStOBAGCp1zGJpICvv_FWAl2FMQPRQN1OTSYE8Ou6AGkByWN/exec", {
+      // SUBSTITUA O URL ABAIXO PELO URL DA SUA NOVA IMPLANTAÇÃO
+      fetch("https://script.google.com/macros/s/AKfycbxTPV1nsb5vOolJNxE2WStOBAGCp1zGJpICvv_FWAl2FMQPRQN1OTSYE8Ou6AGkByWN/exec", { // Use o seu URL mais recente
         method: "POST",
         body: JSON.stringify({ codigo: codigo } ),
-        headers: { "Content-Type": "application/json" },
+        // ALTERE A LINHA ABAIXO
+        headers: { "Content-Type": "text/plain;charset=utf-8" }, 
         redirect: "follow"
       }).then(response => {
         if (response.ok) {
