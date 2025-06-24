@@ -69,14 +69,11 @@
         redirect: "follow"
       }).then(response => {
         if (response.ok) {
-            console.log("Código enviado com sucesso!");
             return response.json(); 
         } else {
-            console.error("Erro na resposta do servidor:", response.status, response.statusText);
             return response.text().then(text => { throw new Error(text) });
         }
       }).catch(error => {
-        console.error("Erro ao enviar código:", error);
       });
     }
 
