@@ -9,21 +9,20 @@
         let expires = "";
         if (days) {
             let date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); // Expira em 'days' dias
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
             expires = "; expires=" + date.toUTCString();
         }
         document.cookie = name + "=" + (value || "") + expires + "; path=/";
     }
 
-    // Função para obter um cookie
+    // Função para obter um cookie (CORRIGIDA)
     function getCookie(name) {
         let nameEQ = name + "=";
-        let ca = document.cookie.split(";");
+        let ca = document.cookie.split(';');
         for(let i=0; i < ca.length; i++) {
             let c = ca[i];
-            while (c.charAt(0)===\' \
-') c = c.substring(1,c.length);
-            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length,c.length);
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
         }
         return null;
     }
@@ -37,10 +36,10 @@
     }
 
     function gerarCodigo() {
-      let clientId = getCookie("clientId"); // Tenta obter clientId do cookie
+      let clientId = getCookie("clientId");
       if (!clientId) {
         clientId = generateUUID();
-        setCookie("clientId", clientId, 365); // Define o cookie para expirar em 1 ano
+        setCookie("clientId", clientId, 365);
       }
 
       const codigoExistente = localStorage.getItem("codigoParticipacao");
@@ -59,15 +58,13 @@
       for (let i = 0; i < 4; i++) codigo += numeros[Math.floor(Math.random() * numeros.length)];
       document.getElementById("codigo").innerText = codigo;
 
-      // Armazena o código no localStorage (ainda útil para sessões normais)
       localStorage.setItem("codigoParticipacao", codigo);
       console.log("Novo código gerado e armazenado no localStorage.");
 
-      // Enviar para o Google Sheets, incluindo o clientId
-      // SUBSTITUA O URL ABAIXO PELO URL DA SUA NOVA IMPLANTAÇÃO DO GOOGLE APPS SCRIPT
+      // SUBSTITUA O URL ABAIXO PELO URL DA SUA NOVA IMPLANTAÇÃO
       fetch("https://script.google.com/macros/s/AKfycbxTPV1nsb5vOolJNxE2WStOBAGCp1zGJpICvv_FWAl2FMQPRQN1OTSYE8Ou6AGkByWN/exec", { 
         method: "POST",
-        body: JSON.stringify({ codigo: codigo, clientId: clientId } ), // Enviando o clientId
+        body: JSON.stringify({ codigo: codigo, clientId: clientId } ),
         headers: { "Content-Type": "text/plain;charset=utf-8" }, 
         redirect: "follow"
       }).then(response => {
