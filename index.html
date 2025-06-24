@@ -4,19 +4,42 @@
   <meta charset="UTF-8">
   <title>Código de Participação</title>
   <script>
+    // Função para definir um cookie
+    function setCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            let date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); // Expira em 'days' dias
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+
+    // Função para obter um cookie
+    function getCookie(name) {
+        let nameEQ = name + "=";
+        let ca = document.cookie.split(";");
+        for(let i=0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0)===\' \') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    }
+
     // Função para gerar um UUID v4
     function generateUUID() {
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return \'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx\'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c === \'x\' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
       });
     }
 
     function gerarCodigo() {
-      let clientId = localStorage.getItem("clientId");
+      let clientId = getCookie("clientId"); // Tenta obter clientId do cookie
       if (!clientId) {
         clientId = generateUUID();
-        localStorage.setItem("clientId", clientId);
+        setCookie("clientId", clientId, 365); // Define o cookie para expirar em 1 ano
       }
 
       const codigoExistente = localStorage.getItem("codigoParticipacao");
@@ -49,7 +72,7 @@
       }).then(response => {
         if (response.ok) {
             console.log("Código enviado com sucesso!");
-            return response.json(); // Esperamos JSON de volta agora
+            return response.json(); 
         } else {
             console.error("Erro na resposta do servidor:", response.status, response.statusText);
             return response.text().then(text => { throw new Error(text) });
@@ -65,7 +88,7 @@
 <body>
   <h2>Obrigado por responder!</h2>
   <p>Seu código de participação é: <strong id="codigo"></strong></p>
-  <p id="mensagem"></p> <!-- Adicionada uma div para mensagens -->
+  <p id="mensagem"></p> 
   <p>Guarde este código para participar do sorteio.</p>
 </body>
 </html>
