@@ -13,20 +13,19 @@
       document.getElementById("codigo").innerText = codigo;
 
       // Enviar para o Google Sheets
-      fetch("https://script.google.com/macros/s/AKfycbxTPV1nsb5vOolJNxE2WStOBAGCp1zGJpICvv_FWAl2FMQPRQN1OTSYE8Ou6AGkByWN/exec", {
+      // SUBSTITUA O URL ABAIXO PELO URL DA SUA NOVA IMPLANTAÇÃO DO GOOGLE APPS SCRIPT
+      fetch("https://script.google.com/macros/s/SEU_NOVO_ID_DE_IMPLANTACAO/exec", {
         method: "POST",
-        body: JSON.stringify({ codigo: codigo }),
+        body: JSON.stringify({ codigo: codigo } ),
         headers: { "Content-Type": "application/json" },
-        redirect: "follow" // Adicione esta linha
+        redirect: "follow"
       }).then(response => {
-        // Agora que o erro do Apps Script foi resolvido, você deve obter uma resposta 200 OK
-        // Verifique se a resposta foi bem-sucedida (status 200-299)
         if (response.ok) {
             console.log("Código enviado com sucesso!");
-            return response.json(); // Se a resposta for JSON
+            return response.json();
         } else {
             console.error("Erro na resposta do servidor:", response.status, response.statusText);
-            return response.text().then(text => { throw new Error(text) }); // Para ver o corpo do erro
+            return response.text().then(text => { throw new Error(text) });
         }
       }).catch(error => {
         console.error("Erro ao enviar código:", error);
